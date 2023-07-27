@@ -18,7 +18,7 @@ export function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
 
   return (
-    <Card className="w-[440px] h-[600px]  grid-grid-rows-[min-content_1fr_min-content]">
+    <Card className="w-[440px] m-[12px]  grid-grid-rows-[min-content_1fr_min-content]">
       <CardHeader>
         <CardTitle>Chat AI</CardTitle>
         <CardDescription>

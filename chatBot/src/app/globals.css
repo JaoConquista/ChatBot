@@ -76,3 +76,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+code {
+  background: rgb(56, 55, 53);
+  color: #fff;
+  border: 1px solid #000;
+}

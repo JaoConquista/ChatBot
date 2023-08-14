@@ -1,8 +1,8 @@
 "use client";
 
-import MicIcon from '@mui/icons-material/Mic';
-import MicNoneIcon from '@mui/icons-material/MicNone';
-import SmartToyIcon from '@mui/icons-material/SmartToy';
+import MicIcon from "@mui/icons-material/Mic";
+import MicNoneIcon from "@mui/icons-material/MicNone";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 import { useChat } from "ai/react";
 import { useEffect } from "react";
 import useSpeechRecognition from "../hooks/useSpeechRecognitionHook";
@@ -18,8 +18,17 @@ import {
 } from "./ui/card";
 import { Input } from "./ui/input";
 
+import Markdown from "markdown-to-jsx";
+
+interface Message {
+  id: number;
+  role: "user" | "assistant";
+  content: string;
+}
+
 export function Chat() {
-  const { messages,input ,handleInputChange, handleSubmit, setInput  } = useChat();
+  const { messages, input, handleInputChange, handleSubmit, setInput } =
+    useChat();
   const {
     isListening,
     text,
@@ -28,17 +37,16 @@ export function Chat() {
     hasRecognitionSupport,
   } = useSpeechRecognition();
 
-  useEffect(() => {
-    if(text){
-      setInput(text);
-      
-    }
-  },[isListening])
+  // const [messages, setMessages] = useState<Message[]>([]);
 
-  console.log(text);
+  useEffect(() => {
+    if (text) {
+      setInput(text);
+    }
+  }, [isListening]);
 
   return (
-    <Card className="w-[440px] m-[12px]  grid-grid-rows-[min-content_1fr_min-content]">
+    <Card className="max-w-[740px] mix-w-[440px] m-[12px]  grid-grid-rows-[min-content_1fr_min-content]">
       <CardHeader>
         <CardTitle>Chat AI</CardTitle>
         <CardDescription>
@@ -64,23 +72,26 @@ export function Chat() {
                 </Avatar>
               )}
 
-              <p className="leading-relaxed">
+              <div>
                 <span className="block font-bold text-slate-700">
-                  {message.role === "user" ? "Usuário" : "AI"}
+                  {message.role === "user" ? "Usuário: " : "AI: "}
                 </span>
-                {message.content}
-              </p>
+              </div>
+
+              <Markdown>{message.content}</Markdown>
             </div>
           );
         })}
 
         <div className="flex gap-3 text-slate-600 text-sn">
           <Avatar>
-            <AvatarFallback> <SmartToyIcon/> </AvatarFallback>
+            <AvatarFallback>
+              <SmartToyIcon />
+            </AvatarFallback>
             <AvatarImage src="https://images.unsplash.com/photo-1684369586188-bad829e7c51f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=664&q=80" />
           </Avatar>
           <p className="leading-relaxed">
-            <span className="block font-bold text-slate-700">AI: </span>
+            <span className="block font-bold text-slate-700"> AI: </span>
           </p>
         </div>
       </CardContent>
@@ -89,13 +100,9 @@ export function Chat() {
         <form className="w-full flex gap-2" onSubmit={handleSubmit}>
           {isListening ? (
             <>
-              <Input
-                placeholder="Speak with me ..."
-                value={input}
-                disabled
-              />
+              <Input placeholder="Speak with me ..." value={input} disabled />
               <Button type="button" onClick={stopListening}>
-                <MicNoneIcon/>
+                <MicNoneIcon />
               </Button>
               <Button type="submit">Send</Button>
             </>
@@ -107,7 +114,7 @@ export function Chat() {
                 onChange={handleInputChange}
               />
               <Button type="button" onClick={startListening}>
-                <MicIcon/>
+                <MicIcon />
               </Button>
               <Button type="submit">Send</Button>
             </>
